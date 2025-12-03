@@ -2,7 +2,8 @@ package lexer;
 
 import java.io.IOException;
 import java.util.Hashtable;
-import Symbol.Type;
+
+import symbol.Type;
 
 public class Lexer {
 

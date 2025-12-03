@@ -1,5 +1,5 @@
 
-package Symbol;
+package symbol;
 import lexer.Keyword;
 import lexer.Tag;
 

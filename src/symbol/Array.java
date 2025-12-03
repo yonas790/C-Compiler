@@ -1,4 +1,4 @@
-package Symbol;
+package symbol;
 import lexer.Tag;
 
 public class Array extends Type {

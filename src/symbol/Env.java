@@ -5,10 +5,6 @@ import java.util.Hashtable;
 import lexer.Keyword;
 import lexer.Token;
 
-/**
- *
- * @author amanuel
- */
 public class Env {
 
     private Hashtable table;

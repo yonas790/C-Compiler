@@ -28,6 +28,9 @@ public class Tag {
 
 
     public final static int MINUS = 269;
+    public final static int PLUS = 270;
+    public final static int MULTIPLY = 271;
+    public final static int DIVIDE = 272;
     
 
     

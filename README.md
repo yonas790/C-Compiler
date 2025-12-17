@@ -1,79 +1,112 @@
-# Compiler (Java implementation)
+# Simple Java Compiler
 
-A small compiler front-end implemented in Java. This repository contains a compact teaching-style compiler that demonstrates core compiler concepts: lexical analysis (lexer), parsing, abstract syntax tree (AST) construction, and a simple symbol/type environment.
+[![License: Unlicensed](https://img.shields.io/badge/License-Unlicensed-red.svg)](https://choosealicense.com/no-permission/)
+[![Language: Java](https://img.shields.io/badge/Language-Java-blue.svg)](https://www.java.com/)
 
-This project is intended for learning and experimentation rather than production use.
+A compact, teaching-style compiler front-end implemented entirely in **Java**. This project is designed to demonstrate the core concepts of compiler construction in a clear and accessible manner, making it an ideal resource for students and enthusiasts.
 
-## Contents
+> **Disclaimer:** This project is intended for **learning and experimentation** rather than production use.
 
-- `src/lexer` — token definitions and lexical analyzer.
-- `src/parser` — parser implementation (recursive-descent / simple parser).
-- `src/inter` — intermediate representation and AST node classes.
-	- `expr` contains expression nodes (`Id`, `Constant`, `Rel`, `arith`, `logic`, ...).
-	- `stmt` contains statement nodes (`If`, `While`, `Set`, `StmtSeq`, etc.).
-- `src/symbol` — symbol table and type information (`Env`, `Type`, `Array`).
-- `src/javaCompiler` — driver (main) class `JavaCompiler.java` which demonstrates how to run the compiler front-end.
+## Core Compiler Concepts
 
-## Quick start — build & run
+This implementation covers the fundamental stages of a compiler front-end:
 
-Requirements
-- Java Development Kit (JDK) 11 or newer.
+| Component | Description | Location |
+| :--- | :--- | :--- |
+| **Lexical Analysis (Lexer)** | Converts the source code into a stream of tokens. | `src/lexer` |
+| **Parsing** | Uses a recursive-descent approach to build the Abstract Syntax Tree (AST) from the token stream. | `src/parser` |
+| **Abstract Syntax Tree (AST)** | The intermediate representation of the source code's structure. | `src/inter` |
+| **Symbol/Type Environment** | Manages variable and type information for semantic analysis. | `src/symbol` |
 
-Build
+The AST nodes are further divided into:
+*   **Expressions (`expr`):** Nodes for identifiers (`Id`), constants (`Constant`), relational (`Rel`), arithmetic, and logical operations.
+*   **Statements (`stmt`):** Nodes for control flow and assignment (`If`, `While`, `Set`, `StmtSeq`, etc.).
 
-1. From the repository root run (Linux/macOS):
+## Quick Start: Build & Run
+
+### Requirements
+
+You must have the **Java Development Kit (JDK) 11 or newer** installed on your system.
+
+### Build
+
+From the repository root, execute the following commands to compile all Java sources. This will create an `out` directory and place all class files inside it.
 
 ```bash
+# Create the output directory
 mkdir -p out
-javac -d out $(find src -name "*.java")
+
+# Compile all Java files and place class files in 'out'
+javac -d out $(find src -name "*.java") // already created
 ```
 
-This compiles all Java sources under `src` and places class files in `out`.
+### Run
 
-Run
-
-The project includes a driver class `javaCompiler.JavaCompiler`. How this driver accepts input may vary (see source for specifics). A common way to run it is:
+The main driver class is `javaCompiler.JavaCompiler`. You can run the compiler with a source file as an argument:
 
 ```bash
+# General command structure
 java -cp out javaCompiler.JavaCompiler <path-to-source-file>
-# Example (if there is a test file `examples/test.src`):
-java -cp out javaCompiler.JavaCompiler examples/test.src
+
+# Example: Running a sample test file
+java -cp out javaCompiler.JavaCompiler src/test/01_empty_block.tst
 ```
 
-If the driver expects input from stdin or other arguments, check the top of `src/javaCompiler/JavaCompiler.java` for usage details.
+### Running All Tests
 
-## Project structure (short)
+The repository includes a suite of sample test files in `src/test/`. You can run them all using a simple shell loop.
 
-Top-level source layout (under `src`):
+**Linux/macOS (Bash/Zsh):**
 
-- `inter/` — AST nodes and intermediate representation (expressions and statements).
-- `lexer/` — `Lexer`, `Token`, and token classes (`Num`, `Real`, `Tag`, `Keyword`, ...).
-- `parser/` — `Parser.java` — constructs the AST from token stream.
-- `symbol/` — type system and environment.
-- `javaCompiler/` — `JavaCompiler.java` — simple driver to glue lexer/parser and interpreter/translator.
+```bash
+for f in src/test/*.tst; do
+    echo "--- Running test: $f ---"
+    java -cp out javaCompiler.JavaCompiler "$f"
+    echo "---------------------------"
+done
+```
 
-## Typical workflow
+**Windows (PowerShell):**
 
-1. Write or open a small source file in the language accepted by this compiler.
-2. Build the Java sources (see Build section).
-3. Run the driver to parse and (optionally) execute or translate the program.
+```powershell
+Get-ChildItem src\test\*.tst | ForEach-Object {
+    Write-Host "--- Running test: $($_.FullName) ---"
+    java -cp out javaCompiler.JavaCompiler $_.FullName
+    Write-Host "---------------------------"
+}
+```
 
-## Tips for contributors
+This loop will execute each test file, display the output (which may include syntax errors or semantic results), and separate the results for clarity.
 
-- Read through `src/javaCompiler/JavaCompiler.java` first to see how the pieces are wired.
-- Add small example inputs in an `examples/` folder and document expected outputs.
-- Keep changes small and focused — this repository is primarily educational.
+## Project Structure
 
-## Next steps / ideas
+The top-level source layout under the `src/` directory is organized as follows:
 
-- Add CLI options (help, verbose, write AST to file).
-- Implement code generation (bytecode or C translation) or an interpreter for the AST.
-- Add unit tests for lexer and parser.
+*   `inter/`: Abstract Syntax Tree (AST) nodes and intermediate representation classes.
+*   `lexer/`: Token definitions, `Lexer`, and token classes (`Num`, `Real`, `Tag`, `Keyword`, etc.).
+*   `parser/`: `Parser.java`, which constructs the AST from the token stream.
+*   `symbol/`: Type system and environment management classes.
+*   `javaCompiler/`: `JavaCompiler.java`, the simple driver class that glues the lexer, parser, and interpreter/translator together.
+*   `test/`: Sample input programs (`.tst` files) to test the compiler's functionality.
 
-## License
+## Contributing & Next Steps
 
-This repository currently has no license file. Add a `LICENSE` if you want to publish or share under a specific license.
+Contributions and suggestions are welcome! Since this is an educational project, please keep changes small and focused.
 
-## Contact
+### Tips for Contributors
 
-If you want help extending this project, open an issue or create a pull request with a clear description of the change.
+1.  Start by reviewing `src/javaCompiler/JavaCompiler.java` to understand how the components are integrated.
+2.  Add small, focused example inputs to the `src/test/` folder and document the expected output.
+
+### Ideas for Extension
+
+The following features would be excellent additions for learning and expanding the project:
+
+*   **Command Line Interface (CLI):** Add options for help, verbose output, and writing the AST to a file.
+*   **Back-End Implementation:** Implement code generation (e.g., Java bytecode or C translation) or an interpreter to execute the AST.
+*   **Testing:** Add dedicated unit tests for the lexer and parser components.
+*   **Test Suite:** Extend the test suite with more complex syntax and edge-case examples.
+
+## 📞 Contact
+
+If you encounter issues, have questions, or want to suggest an extension, please feel free to **open an issue** or **create a pull request** with a clear description of the change.

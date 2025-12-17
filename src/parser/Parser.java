@@ -31,11 +31,15 @@ public class Parser {
 
     private final Lexer lexer;
     private Token look;
+    private Env globalEnv;
 
     public Parser(Lexer lexer) throws IOException {
         this.lexer = lexer;
+        globalEnv = new Env(null); // root scope
+        top = globalEnv;           // start parsing in global scope
         move();
     }
+
 
     private void move() throws IOException {
         look = lexer.scan();
@@ -54,8 +58,11 @@ public class Parser {
     }
 
     public void start() throws IOException {
-        program();
+        program(); // parse the entire program
+        System.out.println("\n=== Symbol Table Tree ===");
+        symbol.SymbolTreePrinter.printEnv(globalEnv); // print from root
     }
+
 
     private void program() throws IOException { // PROG → BLOCK
         block();
@@ -85,9 +92,9 @@ public class Parser {
             match(Tag.ID);
             match(';');
             if (top.getLocal(((Keyword) tok).lexeme) == null) {
-                Id id = new Id((Keyword) tok, p, used);
+                Id id = new Id(tok, ((Keyword) tok).lexeme, p, used);
                 top.push(((Keyword) tok).lexeme, id);
-                used = used + p.width;
+                used += p.width;
             } else {
                 error("duplicate declaration " + ((Keyword) tok).lexeme);
             }
@@ -107,9 +114,9 @@ public class Parser {
 
     private Type dims(Type p) throws IOException { //TYPE → TYPE [num] 
         match('[');
-        Token tok = look;
-        match(Tag.NUM);
-        match(']');
+        Token tok = look; // save current token (Keyword)
+        match(Tag.ID);
+        match(';');
         if (look.tag == '[') {
             dims(p);
         }

@@ -23,4 +23,9 @@ public class Keyword extends Token {
         DO = new Keyword("do", Tag.DO),
         WHILE = new Keyword("while", Tag.WHILE),
         MINUS = new Keyword("minus", Tag.MINUS);//negative
+    
+    @Override
+    public String toString() {
+        return lexeme;
+    }
 }

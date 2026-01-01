@@ -58,15 +58,21 @@ public class Parser {
         throw new Error("near line " + lexer.line + " : " + s);
     }
 
+    private Stmt programStmt = null; // store the parsed program
+    
     public void start() throws IOException {
-        program(); // parse the entire program
+        programStmt = program(); // parse the entire program and store it
         System.out.println("\n=== Symbol Table Tree ===");
         SymbolTablePrinter.printEnv(globalEnv, 0);// print from root
     }
+    
+    public Stmt getProgramStmt() {
+        return programStmt;
+    }
 
 
-    private void program() throws IOException { // PROG → BLOCK
-        block();
+    private Stmt program() throws IOException { // PROG → BLOCK
+        return block();
     }
 
     private Env top = null; // top symbol table

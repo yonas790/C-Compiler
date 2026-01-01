@@ -18,9 +18,9 @@ public class JavaCompiler {
         System.setIn(new FileInputStream(new File(args[0])));
         Lexer lexer = new Lexer();
         Parser parser = new Parser(lexer);
-        parser.start();
+        parser.start(); // parse the program and print symbol table
 
-        Stmt program = parser.block(); // or return root AST from parser
+        Stmt program = parser.getProgramStmt(); // get the parsed program
         CodeGen codeGen = new CodeGen();
         codeGen.gen(program);
 

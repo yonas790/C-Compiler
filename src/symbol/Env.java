@@ -7,36 +7,48 @@ import java.util.ArrayList;
 
 public class Env {
 
-    protected Hashtable table;
+    // Map: identifier name -> symbol (Id)
+    protected Hashtable<String, Id> table;
+
+    // Link to outer scope
     protected Env prev;
-    private List<Env> children;  // nested scopes
+
+    // Nested scopes (for symbol table tree printing)
+    private List<Env> children;
 
     public Env(Env prev) {
-        table = new Hashtable();
+        this.table = new Hashtable<>();
         this.prev = prev;
-        children = new ArrayList<>();
+        this.children = new ArrayList<>();
+
         if (prev != null) {
             prev.addChild(this);
         }
     }
 
-    public void push(String w, Id i) {
-        table.put(w, i);
+    // Insert into current scope only
+    public void push(String name, Id id) {
+        table.put(name, id);
     }
 
-    public Id get(String w) {
+    // Lookup through current scope and all outer scopes
+    public Id get(String name) {
         for (Env e = this; e != null; e = e.prev) {
-            Id found = (Id) e.table.get(w);
-            if (found != null) return found;
+            Id found = e.table.get(name);
+            if (found != null) {
+                return found;
+            }
         }
         return null;
     }
 
-    public Id getLocal(String w) {
-        return (Id) table.get(w);
+    // Lookup only in current scope
+    public Id getLocal(String name) {
+        return table.get(name);
     }
 
-    public Hashtable getTable() {
+    // Expose table for printing/debugging
+    public Hashtable<String, Id> getTable() {
         return table;
     }
 

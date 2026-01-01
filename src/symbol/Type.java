@@ -35,4 +35,8 @@ public class Type extends Keyword {
         return Type.CHAR;
     }
 
+    @Override
+    public String toString() {
+        return lexeme;
+    }
 }

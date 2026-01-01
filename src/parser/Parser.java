@@ -25,6 +25,7 @@ import lexer.Tag;
 import lexer.Token;
 import symbol.Array;
 import symbol.Env;
+import symbol.SymbolTablePrinter;
 import symbol.Type;
 
 public class Parser {
@@ -60,7 +61,7 @@ public class Parser {
     public void start() throws IOException {
         program(); // parse the entire program
         System.out.println("\n=== Symbol Table Tree ===");
-        symbol.SymbolTreePrinter.printEnv(globalEnv); // print from root
+        SymbolTablePrinter.printEnv(globalEnv, 0);// print from root
     }
 
 

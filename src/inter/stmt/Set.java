@@ -6,8 +6,8 @@ import symbol.Type;
 
 public class Set extends Stmt {
     
-    Id id;
-    Expr expr;
+    public Id id;
+    public Expr expr;
     
     public Set(Id id, Expr expr) {
         this.id = id;

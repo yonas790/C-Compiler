@@ -5,9 +5,9 @@ import symbol.Type;
 
 public class IfElse extends Stmt {
 
-    Expr expr;
-    Stmt stmt;
-    Stmt stmt2;
+    public Expr expr;
+    public Stmt stmt;
+    public Stmt stmt2;
 
     public IfElse(Expr e, Stmt s1, Stmt s2) {
         this.expr = e;

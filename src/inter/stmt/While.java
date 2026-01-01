@@ -4,7 +4,7 @@ import inter.expr.Expr;
 import symbol.Type;
 
 public class While extends Stmt{
-    Expr expr; Stmt stmt;
+    public Expr expr; public Stmt stmt;
 
     public While() {
         expr= null;

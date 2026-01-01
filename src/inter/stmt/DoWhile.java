@@ -5,8 +5,8 @@ import symbol.Type;
 
 public class DoWhile extends Stmt {
 
-    Expr expr;
-    Stmt stmt;
+    public Expr expr;
+    public Stmt stmt;
 
     public DoWhile() {
         expr = null;

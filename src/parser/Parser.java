@@ -71,7 +71,7 @@ public class Parser {
 
     private Env top = null; // top symbol table
 
-    private Stmt block() throws IOException { // BLOCK → { DECLS STMTS }
+    public Stmt block() throws IOException { // BLOCK → { DECLS STMTS }
         match('{');
         Env savedEnv = top;
         top = new Env(top);

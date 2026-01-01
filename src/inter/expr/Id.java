@@ -1,15 +1,20 @@
 package inter.expr;
-import lexer.Keyword;
+
+import lexer.Token;
 import symbol.Type;
 
-
-public class Id extends Expr{
-    
+public class Id extends Expr {
+    public String name;
     public int offset;
-    
-    public Id(Keyword token, Type type, int address) {
+
+    public Id(Token token, String name, Type type, int offset) {
         super(token, type);
-        this.offset= address;
+        this.name = name;
+        this.offset = offset;
     }
-    
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -2,26 +2,39 @@ package symbol;
 
 import inter.expr.Id;
 import java.util.Hashtable;
-import lexer.Keyword;
-import lexer.Token;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Env {
 
-    private Hashtable table;
+    // Map: identifier name -> symbol (Id)
+    protected Hashtable<String, Id> table;
+
+    // Link to outer scope
     protected Env prev;
 
-    public Env(Env perv) {
-        table = new Hashtable();
-        prev = perv;
+    // Nested scopes (for symbol table tree printing)
+    private List<Env> children;
+
+    public Env(Env prev) {
+        this.table = new Hashtable<>();
+        this.prev = prev;
+        this.children = new ArrayList<>();
+
+        if (prev != null) {
+            prev.addChild(this);
+        }
     }
 
-    public void push(String w, Id i) {
-        table.put(w, i);
+    // Insert into current scope only
+    public void push(String name, Id id) {
+        table.put(name, id);
     }
 
-    public Id get(String w) {
+    // Lookup through current scope and all outer scopes
+    public Id get(String name) {
         for (Env e = this; e != null; e = e.prev) {
-            Id found = (Id) e.table.get(w);
+            Id found = e.table.get(name);
             if (found != null) {
                 return found;
             }
@@ -29,8 +42,21 @@ public class Env {
         return null;
     }
 
-    public Id getLocal(String w) {
-        return (Id) this.table.get(w);
+    // Lookup only in current scope
+    public Id getLocal(String name) {
+        return table.get(name);
     }
 
+    // Expose table for printing/debugging
+    public Hashtable<String, Id> getTable() {
+        return table;
+    }
+
+    private void addChild(Env child) {
+        children.add(child);
+    }
+
+    public List<Env> getChildren() {
+        return children;
+    }
 }
